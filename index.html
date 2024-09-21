@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>randomSong</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            justify-content: center;
+            background-color:#fff9a2 ;
+            color: #117ef3;
+        }
+        select {
+            padding: 10px;
+            margin: 20px;
+            color: #117ef3;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #117ef3;
+            font-weight: bold;
+        }
+        .result {
+            margin-top: 25px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #0070e7;
+        }
+        .song-img {
+            
+            margin-top: 45px;
+            width: 250px;
+            height:200px;    
+            padding: 10px 595px 0px;
+        }
+        .logo {
+            width: 350px;
+            height: auto;
+            margin-bottom: 20px;     
+            position: absolute;  
+            top: 10px;           
+            left: 10px;          
+            width: 300px;        
+            height: auto;      
+        }
+        .audio-player {
+            margin-top: 25px;
+            padding: 0px 560px 0px;
+        }
+        option {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #117ef3;
+            font-weight: bold;
+            
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+    <h1>randomSong</h1> <img src="โลโก้.PNG" alt="โลโก้.PNG" class="logo">
+    <label for="category"></label>
+    <select id="category">
+        <option value="POP">เพลง POP</option>
+        <option value="TPOP">เพลง T POP</option>
+        <option value="KPOP">เพลง K POP</option>
+        <option value="เศร้า">เพลง เศร้า</option>
+        <option value="ลูกทุ่ง">เพลง ลูกทุ่ง</option>
+    </select>
+    <button onclick="getRandomSong()">random</button>
+
+    <div class="result" id="result"></div>
+    <img id="song-img" class="song-img" src="" alt="" style="display:none;">
+    <audio id="audio-player" class="audio-player" controls style="display:none;">
+        <source id="audio-source" src="" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</div>
+
+    <script>
+        const songs = {
+            POP: [
+                {
+                    title: "Espresso - Sabina Carpenter",
+                    img: "https://www.thenews.com.pk/assets/uploads/updates/2024-05-19/1190770_4057249_sabrina-carpenter_updates.jpg",  // เปลี่ยนลิงก์รูป
+                    audio: "song/pop/Sabrina Carpenter - Espresso (Official Video).mp3"  // เปลี่ยนลิงก์เพลง
+                },
+                {
+                    title: "Every Second - Mina Okabe",
+                    img: "http://p2.music.126.net/-_aVX274kvrbblVPhKgqMQ==/109951165994687352.jpg",
+                    audio: "song/pop/Every Second.mp3"
+                },
+            {
+                title: "Mariposa - Peach Tree Rascals",
+                    img: "https://i.ytimg.com/vi/1UmvMPKMKHE/maxresdefault.jpg",
+                    audio: "song/pop/Peach Tree Rascals - Mariposa.mp3"
+            },
+            {
+                title: "Touch - Katseye",
+                    img: "https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Katseye_Touch.jpg/220px-Katseye_Touch.jpg",
+                    audio: "song/pop/KATSEYE (캣츠아이) Touch Official MV.mp3"
+            },
+            {
+                title: "Tip Toe - HYBS",
+                    img: "https://down-th.img.susercontent.com/file/th-11134207-7r98s-lnvt2f6kbg4nc1.jpg",
+                    audio: "song/pop/HYBS - Tip Toe (Official Video).mp3"
+            },
+            
+                // เพิ่มเพลงอื่น ๆ ในหมวด POP ที่นี่
+            ],
+            TPOP: [
+            {
+                    title: "ชอบไปหมด-Pixxie",
+                    img: "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/29/7d/92/297d92f4-feb0-62d7-19e8-aff4edd7834d/cover.jpg/1200x1200bf-60.jpg",  // เปลี่ยนลิงก์รูป
+                    audio: "song/t-pop/PiXXiE - ชอบไปหมด.mp3"  // เปลี่ยนลิงก์เพลง
+                },
+                {
+                    title: "น่ารักน้อยลงหน่อย(cuteless)-PERSES",
+                    img: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/04/b4/0a/04b40a0b-0703-61b3-0f34-723030512836/888332285957.jpg/1200x1200bf-60.jpg",
+                    audio: "song/t-pop/PERSES ‘น่ารักน้อยลงหน่อย.mp3"
+                },
+            {
+                title: "hot2hot-4eve",
+                    img: "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/5c/c9/04/5cc904e9-03d1-01fc-f608-97e37216ce9b/197338029794.jpg/1200x1200bf-60.jpg",
+                    audio: "song/t-pop/4EVE - Hot 2 Hot.mp3"
+            },
+            {
+                title: "Becuse of You I Shine-Bus",
+                    img: "https://f.ptcdn.info/543/082/000/s55w6x67ccYjXjqcyr1h-o.jpg",
+                    audio: "song/t-pop/BUS 'Because of You, I Shine' OFFICIAL MV.mp3"
+            },
+            {
+                title: "วัดปะหล่ะ?(TEST ME)-4eve",
+                    img: "https://lineimg.omusic.com.tw/img/album/6061834.jpg?v=20220728114402",
+                    audio: "song/t-pop/4EVE - วัดปะหล่ะ？ (TEST ME) (Prod. by URBOYTJ) - Summer Video.mp3"
+            },
+                // เพิ่มเพลงในหมวด TPOP ที่นี่
+            ],
+            KPOP: [
+                {
+                    title: "Drama-Aespa",
+                    img: "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/f7/f0/5c/f7f05ce4-e5a4-900d-e087-1dd9668b2b34/888735945939.jpg/1200x1200bf-60.jpg",
+                    audio: "song//k-pop/SnapSave.io - aespa 에스파 'Drama' MV (64 kbps).mp3"
+                },
+                {
+                    title: "Work-Ateez",
+                    img: "https://i.ytimg.com/vi/VGnOpZhsPk4/maxresdefault.jpg",
+                    audio: "song/k-pop/ATEEZ(에이티즈) - 'WORK' Official MV.mp3"
+                },
+                {
+                    title: "WATCH IT-Theboyz",
+                    img: "https://i.ytimg.com/vi/hSep3hztTzU/maxresdefault.jpg",
+                    audio: "song/k-pop/더보이즈 (THE BOYZ) _ WATCH IT.mp3"
+                },
+                {
+                    title: "Sticky-Kiss of Life",
+                    img: "https://images.genius.com/acd748ba8e9818a274382119d2acd494.1000x1000x1.png",
+                    audio: "song/k-pop/KISS OF LIFE (키스오브라이프) 'Sticky' Official Music Video.mp3"
+                },
+                {
+                    title: "Smart-Le Sserafim",
+                    img: "https://theubj.com/uae/wp-content/uploads/2024/03/le-sserafim-smart-1-060324.jpeg",
+                    audio: "song/k-pop/LE SSERAFIM (르세라핌) 'Smart' OFFICIAL MV.mp3"
+                },
+
+                // เพิ่มเพลงในหมวด KPOP ที่นี่
+            ],
+            เศร้า: [
+                {
+                    title: "ข้อความรูปยิ้ม:) - Polycat",
+                    img: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/bc/e9/83bce95a-effd-9c4e-ffe3-13ef221ea519/cover.jpg/1200x1200bf-60.jpg",
+                    audio: "song/sad/POLYCAT - ข้อความรูปยิ้ม [Music Video].mp3"
+                },
+                {
+                    title: "ประโยคสุดท้าย - HT",
+                    img: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/81/e1/e4/81e1e494-fa9d-28c4-f15b-d335d430bb8f/859785937359_cover.jpg/1200x1200bf-60.jpg",
+                    audio: "song/sad/HT - ประโยคสุดท้าย (Last) [Official MV].mp3"
+                },
+                {
+                    title: "งานเต้นรำ - Musketeers",
+                    img: "https://www.bloggang.com/data/b/bellq/picture/1395215355.jpg",
+                    audio: "song/sad/Musketeers - งานเต้นรำ (Official Music Video).mp3"
+                },
+                {
+                    title: "รอเธอจนหายเปียกปอน - Newery",
+                    img: "https://storage.googleapis.com/atime-media-prod/editor/content/ebe55d1b-07c1-47bf-8e59-a775ea5ccf54.jpeg",
+                    audio: "song/sad/Newery - รอเธอจนหายเปียกปอน (dry my tears) [Official MV].mp3"
+                },
+                {
+                    title: "วันนั้นฝนก็ตกแบบนี้แหละ(rain day) - MEAN",
+                    img: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/95/63/31/956331af-d52f-78b6-1cf5-e751055b8abb/cover.jpg/1200x1200bf-60.jpg",
+                    audio: "song/sad/วันนั้นฝนก็ตกแบบนี้แหละ (rainy day) - MEAN Band ft. Fongbeer [Official MV].mp3"
+                },
+                // เพิ่มเพลงในหมวดเศร้าที่นี่
+            ],
+            ลูกทุ่ง: [
+                
+            {
+                    title: "ซังได้ซังแล้ว-ต่าย อรทัย",
+                    img: "https://sls-prod.api-onscene.com/partner_files/trueidintrend/409165/2_8539.jpg",
+                    audio: "song/lugtung/ซังได้ซังแล้ว - ต่าย อรทัย【LYRIC VIDEO】.mp3"
+                },
+                {
+                    title: "โรคซึมเหล้า-ลำเพลิน วงศกร",
+                    img: "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/dd/78/b1/dd78b13a-89e1-5dc4-0918-c709d7703433/2309359206.jpg/1200x1200bf-60.jpg",
+                    audio: "song/lugtung/โรคซึมเหล้า ลำเพลิน วงศกร  【MUSIC VIDEO】.mp3"
+                },
+                {
+                    title: "อยู่บ่ได้-ครูเต้ย อภิวัฒน์",
+                    img: "https://is2-ssl.mzstatic.com/image/thumb/Music115/v4/aa/94/e4/aa94e49d-7ac2-a7ae-43f8-55dcc0a8247b/cover.jpg/1200x1200bf-60.jpg",
+                    audio: "song/lugtung/อยู่บ่ได้ - เต้ย อภิวัฒน์ [ Official MV ].mp3"
+                },
+                {
+                    title: "ผู้สาวขาเลาะ-ลำไย ไหทองคำ",
+                    img: "https://m.media-amazon.com/images/I/51QJ5+CVZ2L._UXNaN_FMjpg_QL85_.jpg",
+                    audio: "song/lugtung/ผู้สาวขาเลาะ ลำไย ไหทองคำ  (Original).mp3"
+                },
+                {
+                    title: "โคตรเลวในดวงใจ-ตั๊กแตน ชลดา",
+                    img: "https://tse1.mm.bing.net/th?id=OIP.4yYK6aitTPiCyaD5MQwE9wHaHa&pid=Api&P=0&h=180",
+                    audio: "song/lugtung/โคตรเลวในดวงใจ - ตั๊กแตน ชลดา 【LYRIC VIDEO】.mp3"
+                },
+                // เพิ่มเพลงในหมวดลูกทุ่งที่นี่
+            ]
+        };
+
+        function getRandomSong() {
+            const category = document.getElementById("category").value;
+            const songList = songs[category];
+            const randomSong = songList[Math.floor(Math.random() * songList.length)];
+
+            // แสดงผลเพลงที่สุ่มได้
+            document.getElementById("result").innerText = "  " + randomSong.title;
+
+            // แสดงรูปภาพของเพลง
+            const imgElement = document.getElementById("song-img");
+            imgElement.src = randomSong.img;
+            imgElement.style.display = "block";
+
+            // แสดงและเล่นเพลงตัวอย่าง
+            const audioElement = document.getElementById("audio-player");
+            const audioSource = document.getElementById("audio-source");
+            audioSource.src = randomSong.audio;
+            audioElement.style.display = "block";
+            audioElement.load();  // โหลดเพลงใหม่เมื่อสุ่มเพลงใหม่
+        }
+    </script>
+</body>
+</html>
